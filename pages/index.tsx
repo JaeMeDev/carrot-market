@@ -6,7 +6,7 @@ const Home: NextPage = () => {
       {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
         <div
           key={i}
-          className="flex px-4 border-b pb-4 cursor-pointer justify-between"
+          className="flex px-4  border-b pb-5 cursor-pointer justify-between"
         >
           <div className="flex space-x-4">
             <div className="w-20 h-20 bg-gray-400 rounded-md" />
