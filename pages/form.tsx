@@ -4,6 +4,7 @@ interface LoginForm {
   username: string;
   email: string;
   password: string;
+  errors?: string;
 }
 
 export default function Forms() {
@@ -11,11 +12,21 @@ export default function Forms() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
+    clearErrors,
+    setError,
+    reset,
+    resetField,
   } = useForm<LoginForm>({
     mode: "onChange",
   });
   const onValid = (data: LoginForm) => {
     console.log("im valid bby", data);
+    // fetch post 했는데 backend에서 error가 발생할 경우 setError를 사용해서 error를 만든다.
+    setError("errors", { message: "Backend is offline sorry." });
+    setError("username", { message: "이미 있는 유저이름입니다." });
+    reset();
   };
   const onInvalid = (error: FieldErrors) => {
     console.log(error);
@@ -33,6 +44,7 @@ export default function Forms() {
         type="text"
         placeholder="Username"
       />
+      {errors.username?.message}
       <input
         {...register("email", {
           required: "Email is required",
@@ -52,6 +64,7 @@ export default function Forms() {
         placeholder="Password"
       />
       <input type="submit" value="Create Account" />
+      {errors.errors?.message}
     </form>
   );
 }
