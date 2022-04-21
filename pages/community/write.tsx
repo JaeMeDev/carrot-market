@@ -7,6 +7,7 @@ import Button from "@components/button";
 import Layout from "@components/layout";
 import TextArea from "@components/textarea";
 import useMutation from "@libs/client/useMutation";
+import useCoords from "@libs/client/useCoords";
 
 interface WriteForm {
   question: string;
@@ -21,10 +22,11 @@ const Write: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<WriteForm>();
   const [post, { loading, data }] = useMutation<WriteResponse>("/api/posts");
+  const { latitude, longitude } = useCoords();
 
   const onValid = (data: WriteForm) => {
     if (loading) return;
-    post(data);
+    post({ ...data, latitude, longitude });
   };
 
   useEffect(() => {
