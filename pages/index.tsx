@@ -1,11 +1,13 @@
 import type { NextPage } from "next";
 import useSWR from "swr";
 import Head from "next/head";
+import Image from "next/image";
 import { Product } from "@prisma/client";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
+import tiger from "../public/tiger.jpeg";
 
 export interface ProductWithCount extends Product {
   _count: {
@@ -54,6 +56,7 @@ const Home: NextPage = () => {
           </svg>
         </FloatingButton>
       </div>
+      <Image src={tiger} alt="tiger" placeholder="blur" quality={10} />
     </Layout>
   );
 };
