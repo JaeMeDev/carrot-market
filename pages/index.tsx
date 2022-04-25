@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import useSWR from "swr";
 import Head from "next/head";
 import Image from "next/image";
+import client from "@libs/server/client";
 import { Product } from "@prisma/client";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
@@ -20,22 +21,21 @@ interface ProductsResponse {
   products: ProductWithCount[];
 }
 
-const Home: NextPage = () => {
-  const { user, isLoading } = useUser();
-  const { data } = useSWR<ProductsResponse>("/api/products");
+const Home: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+  useUser();
   return (
     <Layout title="Home" hasTabBar>
       <Head>
         <title>Home</title>
       </Head>
       <div className="flex flex-col space-y-5 divide-y">
-        {data?.products?.map((product) => (
+        {products.map((product) => (
           <Item
             key={product.id}
             id={product.id}
             title={product.name}
             price={product.price}
-            hearts={product._count.favs}
+            hearts={product._count?.favs}
           />
         ))}
         <FloatingButton href="/products/upload">
@@ -60,5 +60,14 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps() {
+  const products = await client.product.findMany({});
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
 
 export default Home;
