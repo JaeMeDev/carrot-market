@@ -1,5 +1,9 @@
-# Welcome everyone!
+---
+title: Egypt is great!
+date: 2022.02.02
+category: travel
+---
 
-This is my first blog post!
+# Travel more, Buy less stuff.
 
-Thank you for reading!
+Get fat.
