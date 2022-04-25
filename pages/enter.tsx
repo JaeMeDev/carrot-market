@@ -6,6 +6,9 @@ import Button from "@components/button";
 import Input from "@components/input";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
+import dynamic from "next/dynamic";
+// import Bs from "@components/bs";
+const Bs = dynamic(() => import("@components/bs"), { ssr: false });
 
 interface EnterForm {
   email?: string;
@@ -117,14 +120,17 @@ const Enter: NextPage = () => {
                 />
               ) : null}
               {method === "phone" ? (
-                <Input
-                  register={register("phone", { required: true })}
-                  name="phone"
-                  label="Phone number"
-                  type="tel"
-                  kind="phone"
-                  required
-                />
+                <>
+                  <Bs />
+                  <Input
+                    register={register("phone", { required: true })}
+                    name="phone"
+                    label="Phone number"
+                    type="tel"
+                    kind="phone"
+                    required
+                  />
+                </>
               ) : null}
               {method === "email" ? (
                 <Button text={loading ? "Loading" : "Get login link"} />
