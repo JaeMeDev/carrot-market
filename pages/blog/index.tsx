@@ -1,5 +1,6 @@
 import Layout from "@components/layout";
 import matter from "gray-matter";
+import Link from "next/link";
 import { readdirSync, readFileSync } from "fs";
 import { NextPage } from "next";
 
@@ -7,6 +8,7 @@ interface Post {
   title: string;
   date: string;
   category: string;
+  slug: string;
 }
 
 const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
@@ -18,12 +20,16 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
       <ul>
         {posts.map((post, index) => (
           <div key={index} className="mb-5">
-            <span className="text-lg text-red-500">{post.title}</span>
-            <div>
-              <span>
-                {post.date} / {post.category}
-              </span>
-            </div>
+            <Link href={`/blog/${post.slug}`}>
+              <a>
+                <span className="text-lg text-red-500">{post.title}</span>
+                <div>
+                  <span>
+                    {post.date} / {post.category}
+                  </span>
+                </div>
+              </a>
+            </Link>
           </div>
         ))}
       </ul>
@@ -34,7 +40,8 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
 export async function getStaticProps() {
   const blogPost = readdirSync("./posts").map((file) => {
     const content = readFileSync(`./post/${file}`, "utf-8");
-    return matter(content).data;
+    const [slug, _] = file.split(".");
+    return { ...matter(content).data, slug };
   });
   return {
     props: blogPost,
