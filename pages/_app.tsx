@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Script
         src="https://connect.facebook.net/en_US/sdk.js"
         onLoad={() => {
+          // @ts-ignore
           window.fbAsyncInit = function () {
+            // @ts-ignore
             FB.init({
               appId: "your-app-id",
               autoLogAppEvents: true,
