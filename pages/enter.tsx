@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -8,8 +8,18 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import dynamic from "next/dynamic";
 // import Bs from "@components/bs";
-const Bs = dynamic(() => import("@components/bs"), { ssr: false });
-
+// const Bs = dynamic(() => import("@components/bs"),{ ssr: false });
+const Bs = dynamic(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(() => resolve("@components/bs"), 10000)
+    ),
+  {
+    ssr: false,
+    suspense: true,
+    // loading: () => <span>Loading a big component 4 u bby.</span>,
+  }
+);
 interface EnterForm {
   email?: string;
   phone?: string;
@@ -121,7 +131,9 @@ const Enter: NextPage = () => {
               ) : null}
               {method === "phone" ? (
                 <>
-                  <Bs />
+                  <Suspense fallback={<span>Loading something big</span>}>
+                    <Bs />
+                  </Suspense>
                   <Input
                     register={register("phone", { required: true })}
                     name="phone"
