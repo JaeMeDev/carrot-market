@@ -23,8 +23,9 @@ export function getStaticPaths() {
     return { params: { slug: name } };
   });
   return {
-    paths: files,
-    fallback: false,
+    // [] = 아무것도 먼저 만들지 마라.
+    paths: [],
+    fallback: "blocking",
   };
 }
 
